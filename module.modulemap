@@ -2,6 +2,8 @@ module CCrypto [system] {
        header "/usr/include/openssl/conf.h"
        header "/usr/include/openssl/evp.h"
        header "/usr/include/openssl/err.h"
+       header "/usr/include/openssl/bio.h"
+       header "/usr/include/openssl/ssl.h"
        link "ssl"
        link "crypto"
 }    
