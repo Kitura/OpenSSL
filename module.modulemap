@@ -20,6 +20,9 @@ module CCrypto [system] {
        header "/usr/include/openssl/err.h"
        header "/usr/include/openssl/bio.h"
        header "/usr/include/openssl/ssl.h"
+       header "/usr/include/openssl/md4.h"
+       header "/usr/include/openssl/md5.h"
+       header "/usr/include/openssl/sha.h"
        link "ssl"
        link "crypto"
 }    
