@@ -24,7 +24,6 @@ module CCrypto [system] {
        header "/usr/include/openssl/md5.h"
        header "/usr/include/openssl/sha.h"
        header "/usr/include/openssl/hmac.h"
-       header "/usr/include/openssl/random.h"
        link "ssl"
        link "crypto"
 }    
