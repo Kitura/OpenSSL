@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
  
-module CCrypto [system] {
+module OpenSSL [system] {
        header "/usr/include/openssl/conf.h"
        header "/usr/include/openssl/evp.h"
        header "/usr/include/openssl/err.h"
