@@ -17,7 +17,7 @@
 import PackageDescription
 
 let package = Package(
-	name: "CCryptoSSL",
+	name: "OpenSSL",
 	pkgConfig: "openssl",
 	providers: [
 		.Apt("openssl libssl-dev"), 
