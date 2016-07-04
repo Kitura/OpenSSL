@@ -26,6 +26,7 @@ module OpenSSL [system] {
        header "/usr/include/openssl/hmac.h"
        header "/usr/include/openssl/rand.h"
        header "/usr/include/openssl/pkcs12.h" 
+       header "/usr/include/openssl/x509v3.h" 
        link "ssl"
        link "crypto"
 }    
