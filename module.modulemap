@@ -13,24 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
- 
+
 module OpenSSL [system] {
-       header "/usr/include/openssl/conf.h"
-       header "/usr/include/openssl/evp.h"
-       header "/usr/include/openssl/err.h"
-       header "/usr/include/openssl/bio.h"
-       header "/usr/include/openssl/ssl.h"
-       header "/usr/include/openssl/md4.h"
-       header "/usr/include/openssl/md5.h"
-       header "/usr/include/openssl/sha.h"
-       header "/usr/include/openssl/rsa.h"
-       header "/usr/include/openssl/hmac.h"
-       header "/usr/include/openssl/rand.h"
-       header "/usr/include/openssl/pem.h"
-       header "/usr/include/openssl/engine.h"
-       header "/usr/include/openssl/objects.h"
-       header "/usr/include/openssl/pkcs12.h" 
-       header "/usr/include/openssl/x509v3.h" 
+       header "shim.h" 
        link "ssl"
        link "crypto"
-}    
+}
