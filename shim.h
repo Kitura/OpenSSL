@@ -59,7 +59,7 @@ static inline SSL_get0_alpn_selected_wrapper(const SSL *ssl, const unsigned char
 // on OpenSSL v1.0.2. Calling this function on an older version will have no effect.
 static inline SSL_CTX_setAutoECDH(SSL_CTX *ctx) {
 	
-	#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+	#if (OPENSSL_VERSION_NUMBER >= 0x1000200fL && OPENSSL_VERSION_NUMBER < 0x10100000L)
 		SSL_CTX_ctrl(ctx, SSL_CTRL_SET_ECDH_AUTO, 1, NULL);
 	#endif
 }
