@@ -21,5 +21,6 @@ let package = Package(
 	pkgConfig: "openssl",
 	providers: [
 		.Apt("openssl libssl-dev"), 
+		.Brew("openssl"),
 	]
 )
