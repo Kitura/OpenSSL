@@ -70,12 +70,12 @@ static inline int SSL_EVP_digestVerifyFinal_wrapper(EVP_MD_CTX *ctx, const unsig
 
 	//If version higher than 1.0.2 then it needs to use immutable version of sig
 	#if (OPENSSL_VERSION_NUMBER >= 0x1000200fL)
-		return EVP_DigestVerifyFinal(ctx, sig, siglen)
+		return EVP_DigestVerifyFinal(ctx, sig, siglen);
 	#else
 		// Need to make sig immutable for under 1.0.2
 		//mutable int * newPointer = sig
-		
-		return EVP_DigestVerifyFinal(ctx, sig, siglen)
+
+		return EVP_DigestVerifyFinal(ctx, sig, siglen);
 	#endif
 
 }
