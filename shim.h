@@ -73,8 +73,6 @@ static inline int SSL_EVP_digestVerifyFinal_wrapper(EVP_MD_CTX *ctx, const unsig
 		return EVP_DigestVerifyFinal(ctx, sig, siglen);
 	#else
 		// Need to make sig immutable for under 1.0.2
-		//mutable int * newPointer = sig
-
 		return EVP_DigestVerifyFinal(ctx, sig, siglen);
 	#endif
 
