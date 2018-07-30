@@ -58,11 +58,24 @@ static inline SSL_get0_alpn_selected_wrapper(const SSL *ssl, const unsigned char
 // This is a wrapper function that allows the setting of AUTO ECDH mode when running
 // on OpenSSL v1.0.2. Calling this function on an older version will have no effect.
 static inline SSL_CTX_setAutoECDH(SSL_CTX *ctx) {
-	
+
 	#if (OPENSSL_VERSION_NUMBER >= 0x1000200fL && OPENSSL_VERSION_NUMBER < 0x10100000L)
 		SSL_CTX_ctrl(ctx, SSL_CTRL_SET_ECDH_AUTO, 1, NULL);
 	#endif
 }
 
+// This is a wrapper function that allows older versions of OpenSSL, that use mutable
+// pointers to work alongside newer versions of it that use an immutable pointer.
+static inline int SSL_EVP_digestVerifyFinal_wrapper(EVP_MD_CTX *ctx, const unsigned char *sig, size_t siglen) {
+
+	//If version higher than 1.0.2 then it needs to use immutable version of sig
+	#if (OPENSSL_VERSION_NUMBER >= 0x1000200fL)
+		return EVP_DigestVerifyFinal(ctx, sig, siglen);
+	#else
+		// Need to make sig immutable for under 1.0.2
+		return EVP_DigestVerifyFinal(ctx, sig, siglen);
+	#endif
+
+}
 
 #endif
