@@ -29,6 +29,6 @@ let package = Package(
         )
     ],
     targets: [
-        .systemLibrary(name: "OpenSSL", pkgConfig: "openssl"),
+        .systemLibrary(name: "OpenSSL"),
     ]
 )
