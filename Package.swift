@@ -29,6 +29,12 @@ let package = Package(
         )
     ],
     targets: [
-        .systemLibrary(name: "OpenSSL"),
+        .systemLibrary(
+            name: "OpenSSL",
+            providers: [
+                .apt(["openssl libssl-dev"]),
+                .brew(["openssl"]),
+            ]
+        )
     ]
 )
