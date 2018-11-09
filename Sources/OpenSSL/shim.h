@@ -115,5 +115,36 @@ static inline long OpenSSL_SSL_CTX_set_options(SSL_CTX *context) {
         return SSL_CTX_set_options(context, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
 }
 
+// This wrapper allows for a common call for both versions of OpenSSL when creating a new HMAC_CTX.
+static inline HMAC_CTX *HMAC_CTX_new_wrapper() {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return HMAC_CTX_new();
+        #else
+                return malloc(sizeof(HMAC_CTX));
+        #endif
+}
+
+
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a new HMAC_CTX.
+static inline void HMAC_CTX_free_wrapper(HMAC_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                HMAC_CTX_free(ctx);
+        #else
+                free(ctx);
+        #endif
+}
+
+// This wrapper avoids getting a deprecation warning with OpenSSL 1.1.x.
+static inline int HMAC_Init_wrapper(HMAC_CTX *ctx, const void *key, int len, const EVP_MD *md) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return HMAC_Init_ex(ctx, key, len, md, NULL);
+        #else
+                return HMAC_Init(ctx, key, len, md);
+        #endif	
+}
+
 
 #endif
