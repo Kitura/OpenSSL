@@ -126,7 +126,7 @@ static inline HMAC_CTX *HMAC_CTX_new_wrapper() {
 }
 
 
-// This wrapper allows for a common call for both versions of OpenSSL when freeing a new HMAC_CTX.
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a HMAC_CTX.
 static inline void HMAC_CTX_free_wrapper(HMAC_CTX *ctx) {
 
         #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
@@ -146,5 +146,54 @@ static inline int HMAC_Init_wrapper(HMAC_CTX *ctx, const void *key, int len, con
         #endif	
 }
 
+// This wrapper allows for a common call for both versions of OpenSSL when creating a new EVP_MD_CTX.
+static inline EVP_MD_CTX *EVP_MD_CTX_new_wrapper(void) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return EVP_MD_CTX_new();
+        #else
+                return EVP_MD_CTX_create();
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a EVP_MD_CTX.
+static inline void EVP_MD_CTX_free_wrapper(EVP_MD_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                EVP_MD_CTX_free(ctx);
+        #else
+                EVP_MD_CTX_destroy(ctx);
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when creating a new EVP_CIPHER_CTX.
+static inline EVP_CIPHER_CTX *EVP_CIPHER_CTX_new_wrapper(void) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return EVP_CIPHER_CTX_new();
+        #else
+                return malloc(sizeof(EVP_CIPHER_CTX));
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when resetting an EVP_CIPHER_CTX.
+static inline int EVP_CIPHER_CTX_reset_wrapper(EVP_CIPHER_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return EVP_CIPHER_CTX_reset(ctx);
+        #else
+                return EVP_CIPHER_CTX_cleanup(ctx);
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a new EVP_CIPHER_CTX.
+static inline void EVP_CIPHER_CTX_free_wrapper(EVP_CIPHER_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                EVP_CIPHER_CTX_free(ctx);
+        #else
+                free(ctx);
+        #endif
+}
 
 #endif
