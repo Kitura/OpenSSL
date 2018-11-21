@@ -196,4 +196,19 @@ static inline void EVP_CIPHER_CTX_free_wrapper(EVP_CIPHER_CTX *ctx) {
         #endif
 }
 
+// Converts the given string to BIGNUM
+static inline BIGNUM *stringToBigNum(const unsigned char *p_str, int len) {
+
+        int count = 0;
+        unsigned char str[len];
+        while(count < len) {
+                str[count] = p_str[count];
+                count++;
+        }
+        BIGNUM *p = BN_bin2bn(str, len , NULL);
+        //BN_print_fp(stdout, p);
+
+        return p;
+}
+
 #endif
