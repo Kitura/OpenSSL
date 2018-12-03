@@ -196,4 +196,27 @@ static inline void EVP_CIPHER_CTX_free_wrapper(EVP_CIPHER_CTX *ctx) {
         #endif
 }
 
+// This wrapper allows for a common call for both versions of OpenSSL when setting other keys for RSA.
+static inline void RSA_set_keys(RSA *rsakey, BIGNUM *n, BIGNUM *e, BIGNUM *d, BIGNUM *p, BIGNUM *q, BIGNUM *dmp1, BIGNUM *dmq1, BIGNUM *iqmp) {
+
+	#if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+		RSA_set0_key(rsakey, n, e, d);
+		RSA_set0_factors(rsakey, p, q);
+		RSA_set0_crt_params(rsakey, dmp1, dmq1, iqmp);
+	#else
+		rsakey->n = n;
+		rsakey->e = e;
+		rsakey->d = d;
+		rsakey->p = p;
+		rsakey->q = q;
+		rsakey->dmp1 = dmp1;
+		rsakey->dmq1 = dmq1;
+		rsakey->iqmp = iqmp;
+	#endif
+}
+
+static inline void EVP_PKEY_assign_wrapper(EVP_PKEY *pkey, RSA *rsakey) {
+
+	EVP_PKEY_assign(pkey, EVP_PKEY_RSA, rsakey);
+}
 #endif
