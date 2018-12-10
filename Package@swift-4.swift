@@ -21,6 +21,7 @@ import PackageDescription
 
 let package = Package(
     name: "OpenSSL",
+    pkgConfig: "openssl",
     providers: [
         .apt(["openssl libssl-dev"]),
         .brew(["openssl"]),
