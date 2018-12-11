@@ -78,4 +78,146 @@ static inline int SSL_EVP_digestVerifyFinal_wrapper(EVP_MD_CTX *ctx, const unsig
 
 }
 
+// Initialize OpenSSL
+static inline void OpenSSL_SSL_init(void) {
+
+        SSL_library_init();
+        SSL_load_error_strings();
+        OPENSSL_config(NULL);
+        OPENSSL_add_all_algorithms_conf();
+}
+
+// This is a wrapper function to get server SSL_METHOD based on OpenSSL version.
+static inline const SSL_METHOD *OpenSSL_server_method(void) {
+
+	#if (OPENSSL_VERSION_NUMBER < 0x10100000L)
+	        return SSLv23_server_method();
+	#else
+		return TLS_server_method();
+	#endif
+}
+
+// This is a wrapper function to get client SSL_METHOD based on OpenSSL version.
+static inline const SSL_METHOD *OpenSSL_client_method(void) {
+
+        #if (OPENSSL_VERSION_NUMBER < 0x10100000L)
+                return SSLv23_client_method();
+        #else
+                return TLS_client_method();
+        #endif
+}
+
+static inline long OpenSSL_SSL_CTX_set_mode(SSL_CTX *context, long mode) {
+        return SSL_CTX_set_mode(context, mode);
+}
+
+static inline long OpenSSL_SSL_CTX_set_options(SSL_CTX *context) {
+        return SSL_CTX_set_options(context, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when creating a new HMAC_CTX.
+static inline HMAC_CTX *HMAC_CTX_new_wrapper() {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return HMAC_CTX_new();
+        #else
+                return malloc(sizeof(HMAC_CTX));
+        #endif
+}
+
+
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a HMAC_CTX.
+static inline void HMAC_CTX_free_wrapper(HMAC_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                HMAC_CTX_free(ctx);
+        #else
+                free(ctx);
+        #endif
+}
+
+// This wrapper avoids getting a deprecation warning with OpenSSL 1.1.x.
+static inline int HMAC_Init_wrapper(HMAC_CTX *ctx, const void *key, int len, const EVP_MD *md) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return HMAC_Init_ex(ctx, key, len, md, NULL);
+        #else
+                return HMAC_Init(ctx, key, len, md);
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when creating a new EVP_MD_CTX.
+static inline EVP_MD_CTX *EVP_MD_CTX_new_wrapper(void) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return EVP_MD_CTX_new();
+        #else
+                return EVP_MD_CTX_create();
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a EVP_MD_CTX.
+static inline void EVP_MD_CTX_free_wrapper(EVP_MD_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                EVP_MD_CTX_free(ctx);
+        #else
+                EVP_MD_CTX_destroy(ctx);
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when creating a new EVP_CIPHER_CTX.
+static inline EVP_CIPHER_CTX *EVP_CIPHER_CTX_new_wrapper(void) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return EVP_CIPHER_CTX_new();
+        #else
+                return malloc(sizeof(EVP_CIPHER_CTX));
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when resetting an EVP_CIPHER_CTX.
+static inline int EVP_CIPHER_CTX_reset_wrapper(EVP_CIPHER_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                return EVP_CIPHER_CTX_reset(ctx);
+        #else
+                return EVP_CIPHER_CTX_cleanup(ctx);
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when freeing a new EVP_CIPHER_CTX.
+static inline void EVP_CIPHER_CTX_free_wrapper(EVP_CIPHER_CTX *ctx) {
+
+        #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+                EVP_CIPHER_CTX_free(ctx);
+        #else
+                free(ctx);
+        #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when setting other keys for RSA.
+static inline void RSA_set_keys(RSA *rsakey, BIGNUM *n, BIGNUM *e, BIGNUM *d, BIGNUM *p, BIGNUM *q, BIGNUM *dmp1, BIGNUM *dmq1, BIGNUM *iqmp) {
+
+	#if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+		RSA_set0_key(rsakey, n, e, d);
+		RSA_set0_factors(rsakey, p, q);
+		RSA_set0_crt_params(rsakey, dmp1, dmq1, iqmp);
+	#else
+		rsakey->n = n;
+		rsakey->e = e;
+		rsakey->d = d;
+		rsakey->p = p;
+		rsakey->q = q;
+		rsakey->dmp1 = dmp1;
+		rsakey->dmq1 = dmq1;
+		rsakey->iqmp = iqmp;
+	#endif
+}
+
+static inline void EVP_PKEY_assign_wrapper(EVP_PKEY *pkey, RSA *rsakey) {
+
+	EVP_PKEY_assign(pkey, EVP_PKEY_RSA, rsakey);
+}
+
 #endif
