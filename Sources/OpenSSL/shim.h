@@ -143,7 +143,7 @@ static inline int HMAC_Init_wrapper(HMAC_CTX *ctx, const void *key, int len, con
                 return HMAC_Init_ex(ctx, key, len, md, NULL);
         #else
                 return HMAC_Init(ctx, key, len, md);
-        #endif
+        #endif 
 }
 
 // This wrapper allows for a common call for both versions of OpenSSL when creating a new EVP_MD_CTX.
