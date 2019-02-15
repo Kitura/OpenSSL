@@ -143,7 +143,7 @@ static inline int HMAC_Init_wrapper(HMAC_CTX *ctx, const void *key, int len, con
                 return HMAC_Init_ex(ctx, key, len, md, NULL);
         #else
                 return HMAC_Init(ctx, key, len, md);
-        #endif	
+        #endif 
 }
 
 // This wrapper allows for a common call for both versions of OpenSSL when creating a new EVP_MD_CTX.
@@ -174,6 +174,16 @@ static inline EVP_CIPHER_CTX *EVP_CIPHER_CTX_new_wrapper(void) {
         #else
                 return malloc(sizeof(EVP_CIPHER_CTX));
         #endif
+}
+
+// This wrapper allows for a common call for both versions of OpenSSL when initalizing an EVP_CIPHER_CTX.
+static inline void EVP_CIPHER_CTX_init_wrapper(EVP_CIPHER_CTX *ctx) {
+
+    #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
+            EVP_CIPHER_CTX_reset(ctx);
+    #else
+            EVP_CIPHER_CTX_init(ctx);
+    #endif
 }
 
 // This wrapper allows for a common call for both versions of OpenSSL when resetting an EVP_CIPHER_CTX.
