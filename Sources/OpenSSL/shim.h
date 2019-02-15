@@ -176,7 +176,7 @@ static inline EVP_CIPHER_CTX *EVP_CIPHER_CTX_new_wrapper(void) {
         #endif
 }
 
-// This wrapper allows for a common call for both versions of OpenSSL when initalizing an EVP_CIPHER_CTX
+// This wrapper allows for a common call for both versions of OpenSSL when initalizing an EVP_CIPHER_CTX.
 static inline void EVP_CIPHER_CTX_init_wrapper(EVP_CIPHER_CTX *ctx) {
 
     #if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
