@@ -229,4 +229,12 @@ static inline void EVP_PKEY_assign_wrapper(EVP_PKEY *pkey, RSA *rsakey) {
 
 	EVP_PKEY_assign(pkey, EVP_PKEY_RSA, rsakey);
 }
+
+
+#if OPENSSL_VERSION_NUMBER < 0x03000000
+static inline X509 *SSL_get1_peer_certificate(const SSL *ssl) {
+    return( SSL_get_peer_certificate(ssl) );
+}
+#endif
+
 #endif
